@@ -10,6 +10,24 @@
      ]
     },
     {
+      "intent": "Intent",
+      "slots": [
+      {
+        "name" : "Building",
+        "type": "LIST_OF_BUILDINGS"
+      }
+     ]
+    },
+    {
+      "intent": "CompareIntent",
+      "slots": [
+      {
+        "name" : "Building",
+        "type": "LIST_OF_BUILDINGS"
+      }
+     ]
+    },
+    {
       "intent": "AMAZON.RepeatIntent"
     },
     {
