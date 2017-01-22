@@ -1,7 +1,7 @@
 {
   "intents": [
     {
-      "intent": "GetEnergyIntent",
+      "intent": "OneShotEnergyIntent",
       "slots": [
       {
         "name" : "Building",
@@ -15,6 +15,10 @@
         "name" : "Bound",
         "type": "LIST_OF_BOUNDS"
       },
+      {
+        "name": "Date",
+        "type": "AMAZON.DATE"
+      }
      ]
     },
     {
@@ -47,6 +51,23 @@
       },
      ]
     },
+    {
+      "intent": "DialogIntent",
+      "slots": [
+      {
+        "name" : "Building",
+        "type": "LIST_OF_BUILDINGS"
+      },
+      {
+        "name" : "Energy",
+        "type": "LIST_OF_ENERGY"
+      },
+      {
+          "name": "Date",
+          "type": "AMAZON.DATE"
+      }
+    }, 
+    
     {
       "intent": "AMAZON.RepeatIntent"
     },
