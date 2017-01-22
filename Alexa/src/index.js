@@ -316,8 +316,16 @@ function getFinalEnergyResponse(buildingLoc, date, response) {
 function makeEnergyRequest(energy, building, date, energyResponseCallback) {
 
     //var datum = "MLLW";
+
+    var Testobj = require('ucdutils3.json');
+
+    jQuery.map(Testobj, function(obj) {
+    if(obj.id === building)
+         var datum = obj.energy; // or return obj.name, whatever.
+	});
+
     var endpoint = 'https://bldg-pi-api.ou.ad3.ucdavis.edu/piwebapi/streams/';
-    queryString += ;
+    queryString += datum;
     queryString += '/interpolated';
 
     http.get(endpoint + queryString, function (res) {
