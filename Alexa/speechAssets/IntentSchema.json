@@ -6,7 +6,15 @@
       {
         "name" : "Building",
         "type": "LIST_OF_BUILDINGS"
-      }
+      },
+      {
+        "name" : "Energy",
+        "type": "LIST_OF_ENERGY"
+      },
+      {
+        "name" : "Bound",
+        "type": "LIST_OF_BOUNDS"
+      },
      ]
     },
     {
@@ -16,6 +24,10 @@
         "name" : "Building",
         "type": "LIST_OF_BUILDINGS"
       }
+      {
+      "name" : "Bound",
+      "type": "LIST_OF_BOUNDS"
+      },
      ]
     },
     {
@@ -24,7 +36,15 @@
       {
         "name" : "Building",
         "type": "LIST_OF_BUILDINGS"
-      }
+      },
+      {
+        "name" : "Energy",
+        "type": "LIST_OF_ENERGY"
+      },
+      {
+        "name" : "Bound",
+        "type": "LIST_OF_BOUNDS"
+      },
      ]
     },
     {
