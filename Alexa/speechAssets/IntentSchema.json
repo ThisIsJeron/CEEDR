@@ -10,7 +10,7 @@
      ]
     },
     {
-      "intent": "Intent",
+      "intent": "GetTypeIntent",
       "slots": [
       {
         "name" : "Building",
