@@ -381,14 +381,14 @@ function getBuildingStationFromIntent(intent, assignDefault) {
     var buildingSlot = intent.slots.Building;
     // slots can be missing, or slots can be provided but with empty value.
     // must test for both.o
-    if (!buildingSlot || !buildingSlot.OriginalName) {
+    if (!buildingSlot || !buildingSlot.BuildingName) {
         if (!assignDefault) {
             return {
                 error: true
             }
     } else {
         // lookup the city. Sample skill uses well known mapping of a few known cities to station id.
-        var buildingName = buildingSlot.Original;
+        var buildingName = buildingSlot.BuildingName;
             return {
                 building: buildingName,
             }
