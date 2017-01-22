@@ -5,7 +5,7 @@
       "slots": [
       {
         "name" : "Building",
-        "type": "LIST_OF_ITEMS"
+        "type": "LIST_OF_BUILDINGS"
       }
      ]
     },
