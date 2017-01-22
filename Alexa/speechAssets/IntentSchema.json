@@ -1,7 +1,16 @@
 {
   "intents": [
     {
-      "intent": "GetNewFactIntent"
+      "intent": "RecipeIntent",
+      "slots": [
+      {
+        "name" : "Item",
+        "type": "LIST_OF_ITEMS"
+      }
+     ]
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
     },
     {
       "intent": "AMAZON.HelpIntent"
@@ -13,4 +22,4 @@
       "intent": "AMAZON.CancelIntent"
     }
   ]
- }
+}
