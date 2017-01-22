@@ -3,4 +3,4 @@ GetEnergyIntent when does {Building} use the {Bound} {Energy}
 GetTypeIntent what types of energy does {Building} use on {Date}
 GetTypeIntent what types of energy does {Building} use the {Bound}
 CompareIntent does {Building} use more energy than {Building} 
-CompareIntent which {Building} uses the {bound} {energy}
+CompareIntent which {Building} uses the {bound} {Energy}
