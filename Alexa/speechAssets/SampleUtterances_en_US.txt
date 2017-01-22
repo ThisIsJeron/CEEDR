@@ -1,6 +1,9 @@
+DialogIntent {Energy}
+DialogIntent {Energy} {Building}
+DialogIntent {Energy} {Building} {Date}
 GetEnergyIntent how much {Energy} did {Building} use on {Date}
-GetEnergyIntent when does {Building} use the {Bound} {Energy} 
+GetBoundIntent when does {Building} use the {Bound} {Energy} 
 GetTypeIntent what types of energy does {Building} use on {Date}
 GetTypeIntent what types of energy does {Building} use the {Bound}
 CompareIntent does {Building} use more energy than {Building} 
-CompareIntent which {Building} uses the {bound} {Energy}
+CompareIntent which {Building} uses the {Bound} {Energy}
