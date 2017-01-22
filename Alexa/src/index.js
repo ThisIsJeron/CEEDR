@@ -37,7 +37,7 @@
 /**
  * App ID for the skill
  */
-var APP_ID = undefined;//replace with 'amzn1.echo-sdk-ams.app.[your-unique-value-here]';
+var APP_ID = amzn1.ask.skill.2474137d-c108-4287-bd72-4e4301d8fe43;//replace with 'amzn1.echo-sdk-ams.app.[your-unique-value-here]';
 
 var http = require('http'),
     alexaDateUtil = require('./alexaDateUtil');
@@ -341,7 +341,7 @@ function makeEnergyRequest(energy, building, date, energyResponseCallback) {
     var Testobj = require('ucdutils3.json');
 
     var endpoint = 'https://bldg-pi-api.ou.ad3.ucdavis.edu/piwebapi/streams/';
-    queryString += getObjects(Testobj, BuildingName, );
+    queryString += getObjects(Testobj, BuildingName);
     queryString += '/interpolated';
 
     http.get(endpoint + queryString, function (res) {
@@ -381,14 +381,14 @@ function getBuildingStationFromIntent(intent, assignDefault) {
     var buildingSlot = intent.slots.Building;
     // slots can be missing, or slots can be provided but with empty value.
     // must test for both.o
-    if (!buildingSlot || !buildingSlot.BuildingName) {
+    if (!buildingSlot || !buildingSlot.value) {
         if (!assignDefault) {
             return {
                 error: true
             }
     } else {
         // lookup the city. Sample skill uses well known mapping of a few known cities to station id.
-        var buildingName = buildingSlot.BuildingName;
+        var buildingName = buildingSlot.value;
             return {
                 building: buildingName,
             }
