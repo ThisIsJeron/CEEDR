@@ -315,7 +315,7 @@ function getFinalEnergyResponse(buildingLoc, date, response) {
  */
 function makeEnergyRequest(energy, building, date, energyResponseCallback) {
 
-    var datum = "MLLW";
+    //var datum = "MLLW";
     var endpoint = 'https://bldg-pi-api.ou.ad3.ucdavis.edu/piwebapi/streams/';
     queryString += ;
     queryString += '/interpolated';
