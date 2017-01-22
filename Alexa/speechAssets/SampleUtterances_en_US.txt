@@ -3,6 +3,7 @@ DialogIntent {Energy} {Building}
 DialogIntent {Energy} {Building} {Date}
 OneShotEnergyIntent how much {Energy} did {Building} use on {Date}
 GetBoundIntent when does {Building} use the {Bound} {Energy} 
+GetBoundIntent when does {Building} use the {Bound} {Energy} on {Date}
 GetTypeIntent what types of energy does {Building} use on {Date}
 GetTypeIntent what types of energy does {Building} use the {Bound}
 CompareIntent does {Building} use more energy than {Building} 

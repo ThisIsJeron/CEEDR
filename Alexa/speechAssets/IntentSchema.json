@@ -22,16 +22,41 @@
      ]
     },
     {
+		"intent": "GetBoundIntent",
+      "slots": [
+      {
+        "name" : "Building",
+        "type": "LIST_OF_BUILDINGS"
+      },
+      {
+        "name" : "Energy",
+        "type": "LIST_OF_ENERGY"
+      },
+      {
+        "name" : "Bound",
+        "type": "LIST_OF_BOUNDS"
+      },
+      {
+        "name": "Date",
+        "type": "AMAZON.DATE"
+      }
+       ]
+  	},
+    {
       "intent": "GetTypeIntent",
       "slots": [
       {
         "name" : "Building",
         "type": "LIST_OF_BUILDINGS"
-      }
+      },
+        {
+        "name": "Date",
+        "type": "AMAZON.DATE"
+      },
       {
       "name" : "Bound",
       "type": "LIST_OF_BOUNDS"
-      },
+      }
      ]
     },
     {
@@ -48,7 +73,7 @@
       {
         "name" : "Bound",
         "type": "LIST_OF_BOUNDS"
-      },
+      }
      ]
     },
     {
@@ -66,6 +91,7 @@
           "name": "Date",
           "type": "AMAZON.DATE"
       }
+  	]
     }, 
     
     {
