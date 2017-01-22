@@ -103,7 +103,7 @@ Ceedr.prototype.intentHandlers = {
     },
 
     "SupportedCitiesIntent": function (intent, session, response) {
-        handleSupportedCitiesRequest(intent, session, response);
+        handleSupportedBuildingsRequest(intent, session, response);
     },
 
     "AMAZON.HelpIntent": function (intent, session, response) {
@@ -126,19 +126,17 @@ Ceedr.prototype.intentHandlers = {
 function handleWelcomeRequest(response) {
     var whichBuildingPrompt = "Which building would you like energy information for?",
         speechOutput = {
-            speech: "<speak>Welcome to Tide Pooler. "
-                + "<audio src='https://s3.amazonaws.com/ask-storage/tidePooler/OceanWaves.mp3'/>"
+            speech: "<speak>Welcome to Ceedr. "
                 + whichBuildingPrompt
                 + "</speak>",
             type: AlexaSkill.speechOutputType.SSML
         },
         repromptOutput = {
-            speech: "I can lead you through providing a city and "
-                + "day of the week to get tide information, "
-                + "or you can simply open Tide Pooler and ask a question like, "
-                + "get tide information for Seattle on Saturday. "
-                + "For a list of supported cities, ask what cities are supported. "
-                + whichBuildingPrompt,
+            speech: "I can lead you through providing a type of energy use "
+                + "building and "
+                + "date "
+                + "or you can simply open Ceedr and ask a question like, "
+                + "How much total energy did John D. Kemper Hall of Engineering consume on January 21, 2017?"
             type: AlexaSkill.speechOutputType.PLAIN_TEXT
         };
 
@@ -146,12 +144,12 @@ function handleWelcomeRequest(response) {
 }
 
 function handleHelpRequest(response) {
-    var repromptText = "Which city would you like tide information for?";
-    var speechOutput = "I can lead you through providing a city and "
-        + "day of the week to get tide information, "
-        + "or you can simply open Tide Pooler and ask a question like, "
-        + "get tide information for Seattle on Saturday. "
-        + "For a list of supported cities, ask what cities are supported. "
+    var repromptText = "Which energy type would you like energy information for?";
+    var speechOutput = "I can lead you through providing a type of energy use "
+        + "building and "
+        + "date "
+        + "or you can simply open Ceedr and ask a question like, "
+        + "get electric use for Warren & Leta Giedt Hall for Monday. "
         + "Or you can say exit. "
         + repromptText;
 
@@ -178,7 +176,7 @@ function handleBuildingDialogRequest(intent, session, response) {
         repromptText,
         speechOutput;
     if (buildingLoc.error) {
-        repromptText = "Which building would you like tide information for?";
+        repromptText = "Which building would you like energy information for?";
         // if we received a value for the incorrect city, repeat it to the user, otherwise we received an empty slot
         speechOutput = buildingLoc.OfficialName ? "I'm sorry, I don't have any data for " + buildingLoc.OfficialName + ". " + repromptText : repromptText;
         response.ask(speechOutput, repromptText);
@@ -187,7 +185,7 @@ function handleBuildingDialogRequest(intent, session, response) {
 
     // if we don't have a date yet, go to date. If we have a date, we perform the final request
     if (session.attributes.date) {
-        getFinalBuildingResponse(buildingLoc, session.attributes.date, response);
+        getFinalEnergyResponse(buildingLoc, session.attributes.date, response);
     } else {
         // set city in session and prompt for date
         session.attributes.building = buildingLoc;
@@ -217,7 +215,7 @@ function handleDateDialogRequest(intent, session, response) {
 
     // if we don't have a city yet, go to city. If we have a city, we perform the final request
     if (session.attributes.city) {
-        getFinalTideResponse(session.attributes.city, date, response);
+        getFinalEnergyResponse(session.attributes.city, energy, date, response);
     } else {
         // The user provided a date out of turn. Set date in session and prompt for city
         session.attributes.date = date;
@@ -236,7 +234,7 @@ function handleDateDialogRequest(intent, session, response) {
  * determine the next turn in the dialog, and reprompt.
  */
 function handleNoSlotDialogRequest(intent, session, response) {
-    if (session.attributes.building) {
+    if (session.attributes.energy) {
         // get date re-prompt
         var repromptText = "Please try again saying which building, like Peter J. Shields Library. ";
         var speechOutput = repromptText;
@@ -283,7 +281,6 @@ function handleOneshotTideRequest(intent, session, response) {
         repromptText = "Please try again saying a date, for example, March 14. "
             + "For which date would you like tide information?";
         speechOutput = "I'm sorry, I didn't understand that date. " + repromptText;
-
         response.ask(speechOutput, repromptText);
         return;
     }
@@ -299,13 +296,13 @@ function handleOneshotTideRequest(intent, session, response) {
 function getFinalEnergyResponse(buildingLoc, date, response) {
 
     // Issue the request, and respond to the user
-    makeEnergyRequest(buildingLoc.OriginalName, date, energy, function energyResponseCallback(err, energyResponse) {
+    makeEnergyRequest(energy, buildingLoc, date, function energyResponseCallback(err, energyResponse) {
         var speechOutput;
 
         if (err) {
             speechOutput = "Sorry, we are experiencing a problem. Please try again later";
         } else {
-            speechOutput = date.displayDate + " in " + buildingLoc.Original + " used " + energy + " kBtu on " + date;
+            speechOutput = buildingLoc.OriginalName + " used " + energy.value + " kBtu on " + date.displayDate;
         }
 
         response.tellWithCard(speechOutput, "Ceedr", speechOutput)
@@ -316,20 +313,19 @@ function getFinalEnergyResponse(buildingLoc, date, response) {
  * Uses NOAA.gov API, documented: http://tidesandcurrents.noaa.gov/api/
  * Results can be verified at: http://tidesandcurrents.noaa.gov/noaatidepredictions/NOAATidesFacade.jsp?Stationid=[id]
  */
-function makeTideRequest(station, date, tideResponseCallback) {
+function makeEnergyRequest(energy, building, date, energyResponseCallback) {
 
     var datum = "MLLW";
-    var endpoint = 'http://tidesandcurrents.noaa.gov/api/datagetter';
-    var queryString = '?' + date.requestDateParam;
-    queryString += '&station=' + station;
-    queryString += '&product=predictions&datum=' + datum + '&units=english&time_zone=lst_ldt&format=json';
+    var endpoint = 'https://bldg-pi-api.ou.ad3.ucdavis.edu/piwebapi/streams/';
+    queryString += ;
+    queryString += '/interpolated';
 
     http.get(endpoint + queryString, function (res) {
         var noaaResponseString = '';
         console.log('Status Code: ' + res.statusCode);
 
         if (res.statusCode != 200) {
-            tideResponseCallback(new Error("Non 200 Response"));
+            energyResponseCallback(new Error("Non 200 Response"));
         }
 
         res.on('data', function (data) {
@@ -341,15 +337,15 @@ function makeTideRequest(station, date, tideResponseCallback) {
 
             if (noaaResponseObject.error) {
                 console.log("NOAA error: " + noaaResponseObj.error.message);
-                tideResponseCallback(new Error(noaaResponseObj.error.message));
+                energyResponseCallback(new Error(noaaResponseObj.error.message));
             } else {
                 var highTide = findHighTide(noaaResponseObject);
-                tideResponseCallback(null, highTide);
+                energyResponseCallback(null, highTide);
             }
         });
     }).on('error', function (e) {
         console.log("Communications error: " + e.message);
-        tideResponseCallback(new Error(e.message));
+        energyResponseCallback(new Error(e.message));
     });
 }
 
