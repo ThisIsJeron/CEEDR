@@ -1,7 +1,4 @@
-GetEnergyIntent how much energy does {Building} use
-GetEnergyIntent how much electricity does {Building} use
-GetEnergyIntent how much chilled water does {Building} use
-GetEnergyIntent how much steam does {Building} use
+GetEnergyIntent how much {energy} did {Building} use on {date}
 GetEnergyIntent what types of energy does {Building} use
 GetEnergyIntent what types of energy does {Building} use the most
 GetEnergyIntent what types of energy does {Building} use the least
@@ -11,10 +8,7 @@ GetEnergyIntent when does {Building} use the most steam
 GetEnergyIntent when does {Building} use the least electricity 
 GetEnergyIntent when does {Building} use the least chilled water
 GetEnergyIntent when does {Building} use the least steam
-GetEnergyIntent which {Building} uses the most energy
-GetEnergyIntent which {Building} uses the most electricity
-GetEnergyIntent which {Building} uses the most steam
-GetEnergyIntent which {Building} uses the most chilled water
+GetEnergyIntent which {Building} uses the {bound} {energy}
 GetEnergyIntent which {Building} uses the least energy
 GetEnergyIntent which {Building} uses the least electricity
 GetEnergyIntent which {Building} uses the least steam
