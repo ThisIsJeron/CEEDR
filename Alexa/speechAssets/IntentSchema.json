@@ -1,10 +1,10 @@
 {
   "intents": [
     {
-      "intent": "RecipeIntent",
+      "intent": "GetEnergyIntent",
       "slots": [
       {
-        "name" : "Item",
+        "name" : "Building",
         "type": "LIST_OF_ITEMS"
       }
      ]
