@@ -309,6 +309,26 @@ function getFinalEnergyResponse(buildingLoc, date, response) {
     });
 }
 
+function getObjects(obj, key, val) {
+    var retv = [];
+
+    if(jQuery.isPlainObject(obj))
+    {
+        if(obj[key] === val) // may want to add obj.hasOwnProperty(key) here.
+            retv.push(obj);
+
+        var objects = jQuery.grep(obj, function(elem) {
+            return (jQuery.isArray(elem) || jQuery.isPlainObject(elem));
+        });
+
+        retv.concat(jQuery.map(objects, function(elem){
+            return getObjects(elem, key, val);
+        }));
+    }
+
+    return retv;
+}
+
 /**
  * Uses NOAA.gov API, documented: http://tidesandcurrents.noaa.gov/api/
  * Results can be verified at: http://tidesandcurrents.noaa.gov/noaatidepredictions/NOAATidesFacade.jsp?Stationid=[id]
@@ -317,15 +337,8 @@ function makeEnergyRequest(energy, building, date, energyResponseCallback) {
 
     //var datum = "MLLW";
 
-    var Testobj = require('ucdutils3.json');
-
-    jQuery.map(Testobj, function(obj) {
-    if(obj.id === building)
-         var datum = obj.energy; // or return obj.name, whatever.
-	});
-
     var endpoint = 'https://bldg-pi-api.ou.ad3.ucdavis.edu/piwebapi/streams/';
-    queryString += datum;
+    queryString += getObjects();
     queryString += '/interpolated';
 
     http.get(endpoint + queryString, function (res) {
